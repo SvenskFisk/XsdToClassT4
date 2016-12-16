@@ -41,6 +41,11 @@
   <ItemGroup>
     <Compile Include="TemplateDev.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XsdToClass.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>XsdToClass.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="XsdToClass.tt">
