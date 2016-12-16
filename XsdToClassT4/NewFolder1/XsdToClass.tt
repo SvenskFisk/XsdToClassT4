@@ -1,5 +1,6 @@
-﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ assembly name="System.Core" #>
+<#@ assembly name="EnvDTE" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Diagnostics" #>
@@ -9,14 +10,16 @@
 <#
 // change this to your schema path!
 string[] schemaPaths = new [] {
-    @"C:\temp\T4SchemaToClass\T4SchemaToClass\Test\INT037.Movex.FuelTransactions.xsd",
     @"C:\TFS\LKAB\Integration\BizTalk\2013R2\INT126.Produktionsrapporter.Synergi\INT126\FavouriteService\FavouriteService_synergi_com.xsd",
 };
-
-// namespace of generated classes
-string generatedNamespace = "Schemas";
 #>
 <#
+/* ------------------------------------------
+
+    DO NOT CHANGE ANYTHING BEYOND THIS POINT
+
+--------------------------------------------- */
+
 var xsdPath = Directory.GetFiles(@"C:\Program Files (x86)\Microsoft SDKs\Windows", "xsd.exe", SearchOption.AllDirectories)
     .OrderByDescending(x => x)
     .FirstOrDefault();
@@ -25,6 +28,14 @@ if (xsdPath == null)
 {
     return "Unable to find xsd.exe";
 }
+
+var serviceProvider = (IServiceProvider)this.Host;
+EnvDTE.DTE dte = (EnvDTE.DTE)serviceProvider.GetService(typeof(EnvDTE.DTE));
+var project = dte.Solution.FindProjectItem(Host.TemplateFile).ContainingProject;
+var projectNamespace = (string)project.Properties.Item("DefaultNamespace").Value.ToString();
+var projectPath = (string)project.Properties.Item("FullPath").Value.ToString();
+var relativeFolderPath = Path.GetDirectoryName(Host.TemplateFile).Substring(projectPath.Length - 1);
+var generatedNamespace = projectNamespace + relativeFolderPath.Replace('\\', '.');
 
 var runId = Guid.NewGuid();
 var workFolder = Path.Combine(Path.GetTempPath(), runId.ToString());

@@ -11,6 +11,8 @@ namespace XsdToClassT4
     public class Host
     {
         public string ResolvePath(string asdf) { return null; }
+
+        public string TemplateFile { get; }
     }
 
     public class TemplateDev
@@ -27,6 +29,13 @@ namespace XsdToClassT4
 
 
 
+            var serviceProvider = (IServiceProvider)this.Host;
+            EnvDTE.DTE dte = (EnvDTE.DTE)serviceProvider.GetService(typeof(EnvDTE.DTE));
+            var project = dte.Solution.FindProjectItem(Host.TemplateFile).ContainingProject;
+            var projectNamespace = (string)project.Properties.Item("DefaultNamespace").Value.ToString();
+            var projectPath = (string)project.Properties.Item("FullPath").Value.ToString();
+            var relativeFolderPath = Path.GetDirectoryName(Host.TemplateFile).Substring(projectPath.Length - 1);
+            var generatedNamespace = projectNamespace + relativeFolderPath.Replace('\\', '.');
 
             var xsdPath = Directory.GetFiles(@"C:\Program Files (x86)\Microsoft SDKs\Windows", "xsd.exe", SearchOption.AllDirectories)
                 .OrderByDescending(x => x)
