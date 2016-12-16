@@ -11,7 +11,7 @@
 
 // change this to your schema path(s)!
 string[] schemaPaths = new [] {
-    @"..\..\..\TFS\LKAB\Integration\BizTalk\2013R2\INT126.Produktionsrapporter.Synergi\INT126\FavouriteService\FavouriteService_synergi_com.xsd",
+    @"..\..\..\..\TFS\LKAB\Integration\BizTalk\2013R2\INT126.Produktionsrapporter.Synergi\INT126\FavouriteService\FavouriteService_synergi_com.xsd",
 };
 
 #>
