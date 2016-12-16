@@ -22,13 +22,20 @@ namespace XsdToClassT4
                 @"C:\temp\T4Sc hemaToClass\T4SchemaToClass\Test\INT037.Movex.FuelTransactions.xsd"
             };
 
-            var xsdPath = @"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\xsd.exe";
+            //var xsdPath = @"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools\xsd.exe";
 
 
 
 
 
+            var xsdPath = Directory.GetFiles(@"C:\Program Files (x86)\Microsoft SDKs\Windows", "xsd.exe", SearchOption.AllDirectories)
+                .OrderByDescending(x => x)
+                .FirstOrDefault();
 
+            if (xsdPath == null)
+            {
+                return "Unable to find xsd.exe";
+            }
 
             var runId = Guid.NewGuid();
             var workFolder = Path.Combine(Path.GetTempPath(), runId.ToString());
@@ -55,7 +62,7 @@ namespace XsdToClassT4
 
                 if (process.ExitCode != 0)
                 {
-                    return "WorkFolder: " + workFolder + "\r\n\r\n" + process.StandardError.ReadToEnd();
+                    return string.Format("workFolder: {0}\r\nxsdPath: {1}\r\n\r\n{2}", workFolder, xsdPath, process.StandardError.ReadToEnd());
                 }
             }
 
