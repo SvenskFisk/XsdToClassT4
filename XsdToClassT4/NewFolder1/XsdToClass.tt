@@ -8,17 +8,21 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
 <#
-// change this to your schema path!
+
+// change this to your schema path(s)!
 string[] schemaPaths = new [] {
     @"C:\TFS\LKAB\Integration\BizTalk\2013R2\INT126.Produktionsrapporter.Synergi\INT126\FavouriteService\FavouriteService_synergi_com.xsd",
 };
+
 #>
 <#
 /* ------------------------------------------
 
     DO NOT CHANGE ANYTHING BEYOND THIS POINT
 
---------------------------------------------- */
+    Created by jonas.jamtberg@ibiz-solutions.se
+
+   ------------------------------------------ */
 
 var xsdPath = Directory.GetFiles(@"C:\Program Files (x86)\Microsoft SDKs\Windows", "xsd.exe", SearchOption.AllDirectories)
     .OrderByDescending(x => x)
